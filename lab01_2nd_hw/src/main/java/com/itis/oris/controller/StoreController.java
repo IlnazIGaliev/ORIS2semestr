@@ -1,9 +1,10 @@
-package com.itis.oris.di.component;
+package com.itis.oris.controller;
 
-import com.itis.oris.di.annotation.Controller;
-import com.itis.oris.di.annotation.GetMapping;
+import com.itis.oris.annotation.GetMapping;
+import com.itis.oris.service.StoreService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 

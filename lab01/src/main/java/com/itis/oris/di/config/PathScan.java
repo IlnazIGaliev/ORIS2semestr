@@ -1,6 +1,7 @@
 package com.itis.oris.di.config;
 
 import com.itis.oris.di.annotation.Component;
+import com.itis.oris.di.annotation.Controller;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -35,7 +36,7 @@ public class PathScan {
             String className = resource.substring(0, resource.length() - 6);
             try {
                 Class clazz = Class.forName(className);
-                if (clazz.isAnnotationPresent(Component.class)) {
+                if (clazz.isAnnotationPresent(Component.class) ||  clazz.isAnnotationPresent(Controller.class)) {
                     classes.add(clazz);
                 }
             } catch (ClassNotFoundException ignore) {

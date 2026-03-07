@@ -21,32 +21,18 @@ public class TestEmbeddedTomcat {
         String docBase = new File(".").getAbsolutePath();
         Context tomcatContext = tomcat.addContext(contextPath, docBase);
 
-        /*
-            Создаем сервлет, лучше разместить этот код в отдельном файле
-         */
-
         DispatcherServlet servlet =
                 new DispatcherServlet(new com.itis.oris.di.config.Context());
 
 
-        /*
-            Динамически подключаем севлет
-         */
-        String servletName = "dispatcherServlet"; // любое уникальное имя
+        String servletName = "dispatcherServlet";
         tomcat.addServlet(contextPath, servletName, servlet);
-        //tomcat.addServlet(contextPath, servletName, new DispatcherServlet());
-        // Указываем имя ресурса и сервлет, который этот ресурс будет обрабатывать
-        // (по пути "/*" наш сервлет будет перехватывать все запросы)
         tomcatContext.addServletMappingDecoded("/*", servletName);
 
         try {
             tomcat.start();
             tomcat.getServer().await();
 
-            /*
-                tomcat.stop()
-                tomcat.destroy()
-             */
         } catch (LifecycleException e) {
             throw new RuntimeException(e);
         }

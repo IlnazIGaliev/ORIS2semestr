@@ -1,10 +1,10 @@
-package com.itis.oris.di.util;
+package com.itis.oris.web;
 
-import com.itis.oris.di.annotation.Controller;
-import com.itis.oris.di.annotation.GetMapping;
-import com.itis.oris.di.config.Context;
+import com.itis.oris.annotation.GetMapping;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -13,34 +13,34 @@ import java.util.Map;
 
 public class DispatcherServlet extends HttpServlet {
 
-    private final Context context;
+    private final ApplicationContext context;
 
     // Требование задания
     private final Map<String, Method> handlerMapping = new HashMap<>();
     private final Map<Method, Object> methodControllers = new HashMap<>();
 
-    public DispatcherServlet(Context context) {
+    public DispatcherServlet(ApplicationContext context) {
         this.context = context;
         initHandlerMappings();
     }
 
     private void initHandlerMappings() {
 
-        for (Map.Entry<Class<?>, Object> bean : context.getComponents().entrySet()) {
+        Map<String, Object> controllers =
+                context.getBeansWithAnnotation(Controller.class);
 
-            Class<?> clazz = bean.getKey();
+        for (Object controller : controllers.values()) {
 
-            if (clazz.isAnnotationPresent(Controller.class)) {
+            Class<?> clazz = controller.getClass();
 
-                for (Method method : clazz.getDeclaredMethods()) {
+            for (Method method : clazz.getDeclaredMethods()) {
 
-                    if (method.isAnnotationPresent(GetMapping.class)) {
+                if (method.isAnnotationPresent(GetMapping.class)) {
 
-                        String path = method.getAnnotation(GetMapping.class).value();
+                    String path = method.getAnnotation(GetMapping.class).value();
 
-                        handlerMapping.put(path, method);
-                        methodControllers.put(method, bean.getValue());
-                    }
+                    handlerMapping.put(path, method);
+                    methodControllers.put(method, controller);
                 }
             }
         }

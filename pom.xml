@@ -12,6 +12,9 @@
         <module>lab01</module>
         <module>lab02_spring_context</module>
         <module>lab03_orm</module>
+        <module>lab01_2nd_hw</module>
+        <module>lab04</module>
+        <module>lab05</module>
     </modules>
 
     <properties>
