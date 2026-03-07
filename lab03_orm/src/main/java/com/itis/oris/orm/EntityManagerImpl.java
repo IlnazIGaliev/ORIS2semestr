@@ -35,7 +35,7 @@ public class EntityManagerImpl implements EntityManager, Closeable {
                 return field;
             }
         }
-        throw new RuntimeException("No @Id field in " + clazz.getName());
+        throw new RuntimeException();
     }
 
     @Override

@@ -42,6 +42,8 @@ public class EntityManagerFactory implements Closeable {
             // создаем таблицы
             createTables();
 
+            validateSchema();
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -172,5 +174,17 @@ public class EntityManagerFactory implements Closeable {
         }
 
         return false;
+    }
+
+    private void validateSchema() {
+
+        try (Connection connection = dataSource.getConnection()) {
+
+            SchemaValidator validator = new SchemaValidator(connection);
+            validator.validate(entities);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
