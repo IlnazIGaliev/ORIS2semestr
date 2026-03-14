@@ -148,7 +148,12 @@ public class EntityManagerFactory implements Closeable {
 
             } else if (field.isAnnotationPresent(Column.class)) {
 
-                sql.append(field.getName()).append(" varchar(255),");
+                String sqlType = resolveSqlType(field);
+
+                sql.append(field.getName())
+                        .append(" ")
+                        .append(sqlType)
+                        .append(",");
 
             } else if (field.isAnnotationPresent(ManyToOne.class)) {
 
@@ -186,5 +191,40 @@ public class EntityManagerFactory implements Closeable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String resolveSqlType(Field field) {
+
+        Class<?> type = field.getType();
+
+        if (type == String.class) {
+            return "varchar(255)";
+        }
+
+        if (type == int.class || type == Integer.class) {
+            return "integer";
+        }
+
+        if (type == long.class || type == Long.class) {
+            return "bigint";
+        }
+
+        if (type == boolean.class || type == Boolean.class) {
+            return "boolean";
+        }
+
+        if (type == double.class || type == Double.class) {
+            return "double precision";
+        }
+
+        if (type == java.time.LocalDate.class) {
+            return "date";
+        }
+
+        if (type == java.time.LocalDateTime.class) {
+            return "timestamp";
+        }
+
+        throw new RuntimeException("Unsupported type: " + type);
     }
 }

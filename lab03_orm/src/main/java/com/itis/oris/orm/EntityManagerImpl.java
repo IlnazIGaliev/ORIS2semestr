@@ -95,8 +95,7 @@ public class EntityManagerImpl implements EntityManager, Closeable {
             String columnPart = String.join(",", columns);
             String placeholders = String.join(",", columns.stream().map(c -> "?").toList());
 
-            String sql = "insert into " + table +
-                    " (" + columnPart + ") values (" + placeholders + ") returning id";
+            String sql = "insert into " + table + " (" + columnPart + ") values (" + placeholders + ") returning id";
 
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -148,9 +147,7 @@ public class EntityManagerImpl implements EntityManager, Closeable {
 
             String setPart = String.join(",", columns);
 
-            String sql = "update " + table +
-                    " set " + setPart +
-                    " where id=?";
+            String sql = "update " + table + " set " + setPart + " where id=?";
 
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -223,6 +220,17 @@ public class EntityManagerImpl implements EntityManager, Closeable {
                         } else if (field.isAnnotationPresent(Column.class)) {
 
                             field.set(entity, rs.getObject(field.getName()));
+
+                        } else if (field.isAnnotationPresent(ManyToOne.class)) {
+
+                            Object refId = rs.getObject(field.getName() + "_id");
+
+                            if (refId != null) {
+
+                                Object refEntity = find(field.getType(), refId);
+
+                                field.set(entity, refEntity);
+                            }
                         }
                     }
 
@@ -245,8 +253,7 @@ public class EntityManagerImpl implements EntityManager, Closeable {
             String table = entityType.getSimpleName().toLowerCase();
             String sql = "select * from " + table;
 
-            try (Statement st = connection.createStatement();
-                 ResultSet rs = st.executeQuery(sql)) {
+            try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
                 while (rs.next()) {
 
@@ -263,6 +270,17 @@ public class EntityManagerImpl implements EntityManager, Closeable {
                         } else if (field.isAnnotationPresent(Column.class)) {
 
                             field.set(entity, rs.getObject(field.getName()));
+
+                        } else if (field.isAnnotationPresent(ManyToOne.class)) {
+
+                            Object refId = rs.getObject(field.getName() + "_id");
+
+                            if (refId != null) {
+
+                                Object refEntity = find(field.getType(), refId);
+
+                                field.set(entity, refEntity);
+                            }
                         }
                     }
 
