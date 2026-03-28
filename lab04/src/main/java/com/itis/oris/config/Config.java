@@ -19,7 +19,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories("com.itis.oris.repository")
+@EnableJpaRepositories("com.itis.oris.repositories")
 @ComponentScan("com.itis.oris")
 public class Config {
 

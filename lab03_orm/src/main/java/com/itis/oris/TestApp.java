@@ -17,20 +17,25 @@ public class TestApp {
         try (EntityManager em = factory.getEntityManager()) {
 
             Country country = new Country();
-            country.setName("France");
+            country.setName("Russia");
 
             em.save(country);
 
             System.out.println("Country id = " + country.getId());
 
             City city = new City();
-            city.setName("Paris");
+            city.setName("Moscow");
+            city.setCountry(country);
+
+            City city1 = new City();
+            city.setName("Ufa");
             city.setCountry(country);
 
             em.save(city);
+            em.save(city1);
 
             System.out.println("City id = " + city.getId());
-
+            System.out.println("City id = " + city1.getId());
 
             City dbCity = em.find(City.class, city.getId());
 

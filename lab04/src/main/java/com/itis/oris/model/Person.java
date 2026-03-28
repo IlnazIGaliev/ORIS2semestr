@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.*;
 
-import static jakarta.persistence.InheritanceType.JOINED;
+import java.util.HashSet;
+import java.util.Set;
+
+import static jakarta.persistence.InheritanceType.*;
 
 //@Getter@Setter
 @Entity
@@ -12,9 +15,34 @@ import static jakarta.persistence.InheritanceType.JOINED;
 public class Person {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
 
     protected String name;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    protected Phone phone;
+
+
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    protected Set<Phone> phones = new HashSet<>();
+
+    public Phone getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Phone phone) {
+        this.phone = phone;
+    }
+
+    public Set<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(Set<Phone> phones) {
+        this.phones = phones;
+    }
 
     public Long getId() {
         return id;
@@ -30,5 +58,15 @@ public class Person {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return
+                this.getClass().getSimpleName() + "{" +
+                        "id=" + id +
+                        ", name='" + name + '\'' +
+                        ", phone=" + phone +
+                        '}';
     }
 }
