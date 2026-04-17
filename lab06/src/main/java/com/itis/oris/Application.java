@@ -1,16 +1,10 @@
 package com.itis.oris;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import com.itis.oris.model.BookingsData;
-import com.itis.oris.model.Hotel;
-import com.itis.oris.repository.BookingRepository;
-import com.itis.oris.repository.HotelRepository;
 
-import java.io.File;
 import java.io.IOException;
 
 @SpringBootApplication
@@ -24,6 +18,7 @@ public class Application {
 
         ApplicationContext context = SpringApplication.run(Application.class, args);
 
+/*
         BookingRepository bookingRepository = context.getBean(BookingRepository.class);
         HotelRepository hotelRepository = context.getBean(HotelRepository.class);
 
@@ -40,6 +35,7 @@ public class Application {
         });
 
 
+*/
     }
 
 }

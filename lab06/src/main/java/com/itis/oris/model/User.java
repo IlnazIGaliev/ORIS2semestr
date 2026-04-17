@@ -14,10 +14,21 @@ public class User {
     @ManyToOne(cascade=CascadeType.ALL)
     private Hotel hotel;
 
+    public User(String username, String password, String role, Hotel hotel) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.hotel = hotel;
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         this.role = "USER";
+    }
+
+    public User() {
+
     }
 
     public Long getId() {
@@ -58,5 +69,16 @@ public class User {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", hotel=" + hotel +
+                '}';
     }
 }
